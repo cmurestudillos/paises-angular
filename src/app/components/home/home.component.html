@@ -1,27 +1,158 @@
-<div class="accordion" id="accordionExample">
-    <div *ngFor="let pais of paises; index as i">
-        <div id="headingOne">
-            <h2 class="mb-0">
-                <button class="btn btn-4 cloudy-knoxville-gradient w-50" type="button" data-toggle="collapse" [attr.data-target]=" '#detalle' + i " aria-expanded="true" [attr.aria-controls]=" '#detalle' + i ">{{pais.name.common}}</button>
-                <img [src]="pais.flags.svg" class="float-right rounded-circle shadow border " [title]="pais.name.common" width="65" height="65" [alt]="pais.name.common">
-            </h2>
-            <hr>
+<!-- Loading spinner -->
+<div *ngIf="cargando" class="text-center my-5">
+  <div class="spinner-border text-primary" role="status">
+    <span class="sr-only">Cargando...</span>
+  </div>
+  <p class="mt-3">Cargando países...</p>
+</div>
+
+<!-- Error message -->
+<div *ngIf="error" class="alert alert-danger" role="alert"><i class="fas fa-exclamation-triangle"></i> {{ error }}</div>
+
+<!-- Filtros -->
+<div *ngIf="!cargando && !error" class="filtros-container mb-4">
+  <div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+      <h5 class="mb-0"><i class="fas fa-filter"></i> Filtros de Búsqueda</h5>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <!-- Campo de búsqueda -->
+        <div class="col-md-6 mb-3">
+          <label for="busqueda" class="form-label"> <i class="fas fa-search"></i> Buscar país o capital </label>
+          <input
+            type="text"
+            id="busqueda"
+            class="form-control"
+            [(ngModel)]="terminoBusqueda"
+            (ngModelChange)="aplicarFiltros()"
+            placeholder="Ej: España, Madrid, Argentina..." />
         </div>
 
-        <div [attr.id]=" 'detalle' + i " class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col">
-                        <strong>Capital: </strong><span class="badge badge-pill badge-success"><i class="fas fa-city" aria-hidden="true"></i>  {{pais.capital}}</span>
-                    </div>
-                    <div class="col">
-                        <strong>Poblacion: </strong><span class="badge badge-pill badge-primary"><i class="fas fa-users" aria-hidden="true"></i> {{pais.population | number}}</span>
-                    </div>
-                    <div class="col">
-                        <strong>Subregion: </strong><span class="badge badge-pill badge-warning"><i class="fas fa-map-marker-alt" aria-hidden="true"></i>  {{pais.subregion}}</span>
-                    </div>
-                </div>
-            </div>
+        <!-- Filtro por región -->
+        <div class="col-md-4 mb-3">
+          <label for="region" class="form-label"> <i class="fas fa-globe-americas"></i> Filtrar por región </label>
+          <select id="region" class="form-control" [(ngModel)]="regionSeleccionada" (ngModelChange)="aplicarFiltros()">
+            <option value="">Todas las regiones</option>
+            <option *ngFor="let region of regiones" [value]="region">
+              {{ region }}
+            </option>
+          </select>
         </div>
+
+        <!-- Botón limpiar -->
+        <div class="col-md-2 mb-3 d-flex align-items-end">
+          <button
+            class="btn btn-outline-secondary btn-block"
+            (click)="limpiarFiltros()"
+            [disabled]="terminoBusqueda === '' && regionSeleccionada === ''">
+            <i class="fas fa-times"></i> Limpiar
+          </button>
+        </div>
+      </div>
+
+      <!-- Contador de resultados -->
+      <div class="alert alert-info mb-0" role="alert">
+        <i class="fas fa-info-circle"></i>
+        Mostrando <strong>{{ totalPaisesMostrados }}</strong> de <strong>{{ paises.length }}</strong> países
+      </div>
     </div>
+  </div>
+</div>
+
+<!-- Mensaje sin resultados -->
+<div *ngIf="!cargando && !error && paisesFiltrados.length === 0" class="alert alert-warning text-center" role="alert">
+  <i class="fas fa-exclamation-circle fa-3x mb-3"></i>
+  <h4>No se encontraron países</h4>
+  <p>Intenta con otros términos de búsqueda o cambia los filtros.</p>
+  <button class="btn btn-primary" (click)="limpiarFiltros()"><i class="fas fa-redo"></i> Limpiar filtros</button>
+</div>
+
+<!-- Countries accordion -->
+<div *ngIf="!cargando && !error && paisesFiltrados.length > 0" class="accordion" id="accordionExample">
+  <div *ngFor="let pais of paisesFiltrados; index as i" class="mb-2">
+    <div id="headingOne">
+      <h2 class="mb-0 d-flex align-items-center justify-content-between">
+        <button
+          class="btn btn-4 cloudy-knoxville-gradient flex-grow-1"
+          type="button"
+          data-toggle="collapse"
+          [attr.data-target]="'#detalle' + i"
+          aria-expanded="false"
+          [attr.aria-controls]="'detalle' + i">
+          <i class="fas fa-chevron-down mr-2"></i>
+          {{ pais.name.common }}
+        </button>
+        <img
+          [src]="pais.flags.svg"
+          class="ml-3 rounded-circle shadow border"
+          [title]="pais.name.common"
+          width="65"
+          height="65"
+          [alt]="pais.flags.alt || pais.name.common"
+          onerror="this.src='assets/img/flag-placeholder.png'" />
+      </h2>
+      <hr />
+    </div>
+
+    <div [attr.id]="'detalle' + i" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-4 mb-2">
+            <strong>Capital: </strong>
+            <span class="badge badge-pill badge-success">
+              <i class="fas fa-city" aria-hidden="true"></i>
+              {{ pais.capital && pais.capital.length > 0 ? pais.capital[0] : 'N/A' }}
+            </span>
+          </div>
+          <div class="col-md-4 mb-2">
+            <strong>Población: </strong>
+            <span class="badge badge-pill badge-primary">
+              <i class="fas fa-users" aria-hidden="true"></i>
+              {{ pais.population | number }}
+            </span>
+          </div>
+          <div class="col-md-4 mb-2">
+            <strong>Subregión: </strong>
+            <span class="badge badge-pill badge-warning">
+              <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+              {{ pais.subregion || 'N/A' }}
+            </span>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-md-4 mb-2">
+            <strong>Región: </strong>
+            <span class="badge badge-pill badge-info">
+              <i class="fas fa-globe" aria-hidden="true"></i>
+              {{ pais.region }}
+            </span>
+          </div>
+          <div class="col-md-4 mb-2">
+            <strong>Área: </strong>
+            <span class="badge badge-pill badge-secondary">
+              <i class="fas fa-mountain" aria-hidden="true"></i>
+              {{ pais.area | number }} km²
+            </span>
+          </div>
+          <div class="col-md-4 mb-2">
+            <strong>Código: </strong>
+            <span class="badge badge-pill badge-dark">
+              {{ pais.cca3 }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Idiomas -->
+        <div class="row mt-2" *ngIf="pais.languages">
+          <div class="col-12">
+            <strong>Idiomas: </strong>
+            <span *ngFor="let lang of pais.languages | keyvalue" class="badge badge-pill badge-info mr-1">
+              {{ lang.value }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

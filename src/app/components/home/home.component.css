@@ -1,4 +1,97 @@
 .card-header {
-    background-color: transparent;
-    border-top: none;
+  background-color: transparent;
+  border-top: none;
+}
+
+.btn-4 {
+  text-align: left;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-4:hover {
+  transform: translateX(5px);
+}
+
+.rounded-circle {
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.rounded-circle:hover {
+  transform: scale(1.1);
+}
+
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
+.badge {
+  font-size: 0.9rem;
+  padding: 0.5rem 0.75rem;
+}
+
+/* Estilos para filtros */
+.filtros-container {
+  animation: fadeIn 0.5s ease;
+}
+
+.card-header {
+  border-radius: 0.25rem 0.25rem 0 0 !important;
+}
+
+.form-label {
+  font-weight: 600;
+  color: #495057;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #80bdff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.btn-outline-secondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.accordion > div {
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .btn-4 {
+    font-size: 0.9rem;
+  }
+
+  .rounded-circle {
+    width: 50px !important;
+    height: 50px !important;
+  }
 }
