@@ -1,24 +1,350 @@
+/* =====================
+   Gradient palette — #d53369 → #daae51
+   ===================== */
+:root {
+  --grad-start: #d53369;
+  --grad-end: #daae51;
+  --primary-color: #d53369;
+  --primary-color-text: #ffffff;
+  --primary-400: #e05580;
+  --primary-500: #d53369;
+  --primary-600: #bf2a5b;
+  --primary-700: #a82250;
+  --highlight-bg: rgba(213, 51, 105, 0.15);
+  --highlight-text-color: rgba(255, 255, 255, 0.87);
+}
+
+/* =====================
+   Base
+   ===================== */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--surface-ground, #09090b);
+  color: var(--text-color, #ffffff);
+  font-family: 'Inter var', 'Inter', sans-serif;
+  min-height: 100vh;
+}
+
+/* =====================
+   Navbar — gradiente rosa-dorado
+   ===================== */
 .bg-custom {
-  background-image: linear-gradient(15deg, #d32f2f 0%, #d08080 100%);
+  background: linear-gradient(90deg, #d53369 0%, #daae51 100%) !important;
+  box-shadow: 0 2px 24px rgba(213, 51, 105, 0.35);
 }
 
-.btn {
-  flex: 1 1 auto;
-  padding: 30px;
-  text-align: center;
-  text-transform: uppercase;
-  transition: 0.5s;
-  background-size: 200% auto;
-  color: white;
-  box-shadow: 0 0 20px #eee;
-  border-radius: 10px;
-  border: 1px solid #d32f2f !important;
+/* =====================
+   PrimeNG Card
+   ===================== */
+.p-card {
+  background: var(--surface-card, #18181b) !important;
+  border: 1px solid rgba(255, 255, 255, 0.07) !important;
+  border-radius: 12px !important;
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
-.btn-4 {
-  background-image: linear-gradient(to right, #d08080 0%, #fbc2c2 51%, #d32f2f 100%);
+.p-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(213, 51, 105, 0.45) !important;
+  border-color: rgba(213, 51, 105, 0.45) !important;
 }
 
-.btn:hover {
-  background-position: right center;
+.p-card .p-card-header {
+  padding: 0 !important;
+  line-height: 0;
+}
+
+.p-card .p-card-body {
+  padding: 1rem !important;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.p-card .p-card-title {
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  color: var(--text-color, #fff) !important;
+  margin-bottom: 0.2rem !important;
+  line-height: 1.4;
+}
+
+.p-card .p-card-subtitle {
+  font-size: 0.72rem !important;
+  color: var(--text-color-secondary, #a1a1aa) !important;
+  margin-bottom: 0 !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.4;
+}
+
+.p-card .p-card-content {
+  padding: 0.75rem 0 0 !important;
+  flex: 1;
+}
+
+.pais-flag {
+  width: 100%;
+  height: 155px;
+  object-fit: cover;
+  display: block;
+}
+
+.pais-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+/* =====================
+   PrimeNG Tag
+   ===================== */
+.p-tag {
+  font-size: 0.68rem !important;
+  padding: 0.22rem 0.6rem !important;
+  font-weight: 500 !important;
+}
+
+/* =====================
+   Search input — wrapper custom (sin p-iconField)
+   El componente usa <div class="search-wrapper"> en home.component.html
+   ===================== */
+.search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 1 1 240px;
+  min-width: 200px;
+}
+
+.search-wrapper .search-icon {
+  position: absolute;
+  left: 0.9rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.85rem;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.search-wrapper .search-input,
+.search-wrapper input.p-inputtext {
+  width: 100% !important;
+  padding: 0.65rem 1rem 0.65rem 2.5rem !important;
+  background: rgba(255, 255, 255, 0.07) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.16) !important;
+  border-radius: 10px !important;
+  color: #ffffff !important;
+  font-size: 0.9rem !important;
+  line-height: 1.5;
+  height: 42px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.search-wrapper .search-input:focus,
+.search-wrapper input.p-inputtext:focus {
+  border-color: var(--grad-start, #d53369) !important;
+  box-shadow: 0 0 0 3px rgba(213, 51, 105, 0.2) !important;
+  outline: none !important;
+  background: rgba(255, 255, 255, 0.09) !important;
+}
+
+.search-wrapper .search-input:hover:not(:focus),
+.search-wrapper input.p-inputtext:hover:not(:focus) {
+  border-color: rgba(255, 255, 255, 0.32) !important;
+}
+
+.search-wrapper .search-input::placeholder,
+.search-wrapper input.p-inputtext::placeholder {
+  color: rgba(255, 255, 255, 0.32) !important;
+}
+
+/* =====================
+   PrimeNG Dropdown — estilo consistente con search-input
+   ===================== */
+.p-dropdown {
+  background: rgba(255, 255, 255, 0.07) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.16) !important;
+  border-radius: 10px !important;
+  min-width: 200px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.p-dropdown:not(.p-disabled):hover {
+  border-color: rgba(255, 255, 255, 0.32) !important;
+}
+
+.p-dropdown:not(.p-disabled).p-focus {
+  border-color: var(--grad-start, #d53369) !important;
+  box-shadow: 0 0 0 3px rgba(213, 51, 105, 0.2) !important;
+}
+
+.p-dropdown .p-dropdown-label {
+  padding: 0.65rem 1rem !important;
+  color: #ffffff !important;
+  background: transparent !important;
+  font-size: 0.9rem !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.p-dropdown .p-dropdown-label.p-placeholder {
+  color: rgba(255, 255, 255, 0.32) !important;
+}
+
+.p-dropdown .p-dropdown-trigger {
+  color: rgba(255, 255, 255, 0.4) !important;
+  width: 2.5rem !important;
+  background: transparent !important;
+  border: none !important;
+}
+
+.p-dropdown .p-dropdown-trigger .p-dropdown-trigger-icon {
+  font-size: 0.75rem !important;
+}
+
+.p-dropdown .p-dropdown-clear-icon {
+  color: rgba(255, 255, 255, 0.45) !important;
+  right: 2.5rem !important;
+}
+
+/* Panel del dropdown */
+.p-dropdown-panel {
+  background: #1c1c1f !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6) !important;
+  margin-top: 4px !important;
+}
+
+.p-dropdown-items-wrapper {
+  border-radius: 8px !important;
+  overflow: hidden !important;
+}
+
+.p-dropdown-items {
+  padding: 0.35rem !important;
+}
+
+.p-dropdown-item {
+  color: rgba(255, 255, 255, 0.85) !important;
+  border-radius: 6px !important;
+  font-size: 0.9rem !important;
+  padding: 0.55rem 0.85rem !important;
+  transition: background 0.15s ease !important;
+}
+
+.p-dropdown-item:not(.p-highlight):not(.p-disabled):hover {
+  background: rgba(255, 255, 255, 0.07) !important;
+  color: #ffffff !important;
+}
+
+.p-dropdown-item.p-highlight {
+  background: rgba(213, 51, 105, 0.2) !important;
+  color: #f472b6 !important;
+}
+
+/* =====================
+   PrimeNG Button
+   ===================== */
+.p-button {
+  border-radius: 10px !important;
+  height: 42px !important;
+  font-size: 0.9rem !important;
+  font-weight: 500 !important;
+  transition: opacity 0.2s ease, box-shadow 0.2s ease !important;
+  white-space: nowrap;
+}
+
+/* Botón primario — gradiente */
+.p-button:not(.p-button-outlined):not(.p-button-text):not(.p-button-secondary) {
+  background: linear-gradient(90deg, #d53369 0%, #daae51 100%) !important;
+  border: none !important;
+  color: #ffffff !important;
+}
+
+.p-button:not(.p-button-outlined):not(.p-button-text):not(.p-button-secondary):not(:disabled):hover {
+  opacity: 0.88;
+  box-shadow: 0 4px 18px rgba(213, 51, 105, 0.4) !important;
+}
+
+/* Botón "Limpiar" secundario outlined */
+.p-button.p-button-secondary.p-button-outlined {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.18) !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.p-button.p-button-secondary.p-button-outlined:not(:disabled):hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(255, 255, 255, 0.38) !important;
+  color: #ffffff !important;
+}
+
+.p-button:disabled {
+  opacity: 0.35 !important;
+  cursor: not-allowed !important;
+}
+
+/* Botón "Limpiar filtros" en no-resultados (primario por defecto) */
+.no-resultados .p-button {
+  background: linear-gradient(90deg, #d53369 0%, #daae51 100%) !important;
+  border: none !important;
+  color: #fff !important;
+}
+
+/* =====================
+   Badges — datos de países en tarjetas
+   ===================== */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.28rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.badge .pi {
+  font-size: 0.62rem;
+}
+
+.badge-capital {
+  background: rgba(52, 211, 153, 0.13);
+  color: #6ee7b7;
+  border: 1px solid rgba(52, 211, 153, 0.22);
+}
+
+.badge-pop {
+  background: rgba(96, 165, 250, 0.13);
+  color: #93c5fd;
+  border: 1px solid rgba(96, 165, 250, 0.22);
+}
+
+.badge-region {
+  background: rgba(213, 51, 105, 0.13);
+  color: #f9a8d4;
+  border: 1px solid rgba(213, 51, 105, 0.22);
+}
+
+.badge-code {
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  letter-spacing: 0.07em;
+  font-family: 'JetBrains Mono', 'Consolas', monospace;
 }
