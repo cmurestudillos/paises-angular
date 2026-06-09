@@ -1,219 +1,66 @@
-# 🌍 Países del Mundo - Angular
+# Países del Mundo — Angular
 
-Aplicación web desarrollada en Angular que permite explorar información detallada de todos los países del mundo. Incluye funcionalidades de búsqueda y filtrado por región para facilitar la navegación entre más de 240 países.
+SPA que muestra todos los países del mundo. Búsqueda en tiempo real por nombre o capital, filtrado por región, tarjetas con banderas, skeletons de carga y diseño dark profesional con gradiente rosa-dorado.
 
-## ✨ Características
+**Demo en producción:** [https://angular-paises-spa.vercel.app](https://angular-paises-spa.vercel.app)
 
-- 🔍 **Búsqueda en tiempo real**: Busca países por nombre o capital
-- 🗺️ **Filtro por región**: Filtra países por continente (África, América, Asia, Europa, Oceanía)
-- 📊 **Información detallada**: Visualiza datos como población, capital, área, idiomas y más
-- 🎨 **Interfaz intuitiva**: Diseño accordion para mostrar/ocultar información
-- 🚀 **Responsive**: Adaptado para dispositivos móviles, tablets y escritorio
-- 🎯 **Contador de resultados**: Visualiza cuántos países coinciden con tus filtros
-- 🏳️ **Banderas**: Muestra la bandera de cada país en formato SVG
+## Stack
 
-## 🛠️ Tecnologías Utilizadas
+| Tecnología | Versión | Uso |
+|-----------|---------|-----|
+| Angular | 17.3.12 | Framework (NgModule) |
+| TypeScript | ~5.3.3 | Lenguaje |
+| RxJS | ~7.8.x | Programación reactiva |
+| PrimeNG | 17.18.15 | Componentes UI |
+| PrimeIcons | 7.0.0 | Iconografía |
+| Tema | aura-dark-green | CSS pre-compilado |
+| ESLint | 8.57.1 | Linting (legacy config) |
+| @angular-eslint | 17.5.3 | Reglas Angular + template |
+| Prettier | 3.8.x | Formateo |
+| pnpm | 11.5.2 | Gestor de paquetes |
 
-- **Angular** - Framework principal
-- **TypeScript** - Lenguaje de programación
-- **RxJS** - Programación reactiva
-- **Bootstrap 4** - Framework CSS
-- **Font Awesome** - Iconos
-- **REST API** - Consumo de API de países
-
-## 📋 Prerequisitos
-
-Antes de comenzar, asegúrate de tener instalado:
-
-- [Node.js](https://nodejs.org/) (v14 o superior)
-- [npm](https://www.npmjs.com/) (v6 o superior)
-- [Angular CLI](https://angular.io/cli) (v15 o superior)
+## Instalación
 
 ```bash
-npm install -g @angular/cli
+pnpm install
+pnpm approve-builds --all    # Autoriza build scripts (esbuild)
 ```
 
-## 🚀 Instalación
-
-1. **Clona el repositorio**
+## Scripts
 
 ```bash
-git clone https://github.com/cmurestudillos/paises-angular.git
-cd angular-paises
+pnpm start       # ng serve — http://localhost:4200
+pnpm build       # ng build — dist/angular-paises
+pnpm watch       # ng build --watch
+pnpm lint        # ESLint — 0 errores
+pnpm lint:fix    # Corregir y formatear automáticamente
+pnpm test        # Karma + Jasmine
 ```
 
-2. **Instala las dependencias**
+## Características
 
-```bash
-npm install
-```
+- Grid responsivo de tarjetas con bandera, nombre oficial, capital, población, región y código ISO
+- Búsqueda en tiempo real por nombre, nombre oficial o capital
+- Filtro por región con dropdown y opción de limpiar
+- Skeletons de carga: 6 placeholders animados mientras llega la API
+- Badges con color semántico por tipo de dato (capital, población, región, código)
+- Gradiente `linear-gradient(90deg, #d53369 0%, #daae51 100%)` en navbar y acentos
 
-3. **Ejecuta la aplicación**
+## API
 
-```bash
-ng serve
-```
+`GET https://countries-api-service.vercel.app/api/countries`
 
-4. **Abre tu navegador**
+## Notas de configuración
 
-Navega a `http://localhost:4200/`
+### `.npmrc` — `shamefully-hoist=true`
+Angular CLI necesita `node_modules` plano. pnpm en modo estricto no expone sus binarios internos.
 
-## 📦 Scripts Disponibles
+### ESLint 8 (no 9)
+`@angular-eslint@17` es incompatible con ESLint 9. Config en `.eslintrc.json` (formato legacy). `src/index.html` excluido del lint ya que no es un template de componente Angular.
 
-```bash
-# Desarrollo
-ng serve
+### PrimeNG 17 — Tema CSS pre-compilado
+PrimeNG 17.x usa temas precompilados, no el sistema de presets/CSS variables de v18+. El tema `aura-dark-green` se carga en el array `styles` de `angular.json`.
 
-# Build de producción
-ng build --prod
+## Autor
 
-# Ejecutar tests
-ng test
-
-# Ejecutar linter
-ng lint
-```
-
-## 🗂️ Estructura del Proyecto
-
-```
-paises-angular/
-├── src/
-│   ├── app/
-│   │   ├── components/
-│   │   │   ├── home/
-│   │   │   │   ├── home.component.ts
-│   │   │   │   ├── home.component.html
-│   │   │   │   └── home.component.css
-│   │   │   └── shared/
-│   │   │       ├── navbar/
-│   │   │       └── footer/
-│   │   ├── models/
-│   │   │   └── pais.interface.ts
-│   │   ├── services/
-│   │   │   └── paises.service.ts
-│   │   ├── routes/
-│   │   │   └── app-routing.module.ts
-│   │   ├── app.component.ts
-│   │   ├── app.component.html
-│   │   └── app.module.ts
-│   ├── assets/
-│   └── index.html
-├── README.md
-└── package.json
-```
-
-## 🌐 API Utilizada
-
-Este proyecto consume la API REST de países:
-
-**Base URL**: `https://countries-api-service.vercel.app/api/countries`
-
-### Respuesta de la API
-
-```json
-{
-  "success": true,
-  "count": 240,
-  "data": [
-    {
-      "name": {
-        "common": "Spain",
-        "official": "Kingdom of Spain"
-      },
-      "capital": ["Madrid"],
-      "population": 47351567,
-      "region": "Europe",
-      "subregion": "Southern Europe",
-      "flags": {
-        "svg": "https://...",
-        "png": "https://..."
-      },
-      "area": 505992,
-      "languages": {
-        "spa": "Spanish"
-      }
-    }
-  ]
-}
-```
-
-## 💡 Uso
-
-### Búsqueda de Países
-
-1. Escribe el nombre del país o su capital en el campo de búsqueda
-2. Los resultados se filtrarán automáticamente en tiempo real
-
-### Filtro por Región
-
-1. Selecciona una región del menú desplegable
-2. Se mostrarán solo los países de esa región
-
-### Ver Detalles
-
-1. Haz clic en el botón de cualquier país
-2. Se desplegará un panel con información detallada
-
-### Limpiar Filtros
-
-1. Haz clic en el botón "Limpiar"
-2. Se restablecerán todos los filtros
-
-## 🎨 Capturas de Pantalla
-
-> Añade capturas de pantalla de tu aplicación aquí
-
-## 🤝 Contribuir
-
-Las contribuciones son bienvenidas. Para cambios importantes:
-
-1. Fork el proyecto
-2. Crea una rama para tu característica (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
-
-## 📝 Funcionalidades Futuras
-
-- [ ] Paginación de resultados
-- [ ] Ordenamiento (por nombre, población, área)
-- [ ] Vista de tarjetas como alternativa al accordion
-- [ ] Modo oscuro
-- [ ] Favoritos
-- [ ] Comparar países
-- [ ] Exportar datos a CSV/PDF
-- [ ] Gráficos estadísticos
-- [ ] Mapa interactivo
-
-## 🐛 Reportar Bugs
-
-Si encuentras algún bug, por favor abre un [issue](https://github.com/cmurestudillos/paises-angular/issues) describiendo:
-
-- El comportamiento esperado
-- El comportamiento actual
-- Pasos para reproducir el error
-- Capturas de pantalla (si aplica)
-
-## 📄 Licencia
-
-Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para más detalles.
-
-## 👤 Autor
-
-**Carlos Mur**
-
-- GitHub: [@tu-usuario](https://github.com/cmurestudillos)
-
-## 🙏 Agradecimientos
-
-- [REST Countries API](https://countries-api-service.vercel.app/) por proporcionar los datos
-- [Angular](https://angular.io/) por el excelente framework
-- [Bootstrap](https://getbootstrap.com/) por los componentes UI
-- [Font Awesome](https://fontawesome.com/) por los iconos
-
----
-
-⭐️ Si te gustó este proyecto, no olvides darle una estrella en GitHub
-
-**Desarrollado con ❤️ usando Angular**
+Carlos Mur

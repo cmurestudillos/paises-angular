@@ -15,7 +15,7 @@ export interface Pais {
   cca2: string;
   cca3: string;
   languages?: { [key: string]: string };
-  currencies?: any;
+  currencies?: { [key: string]: { name: string; symbol?: string } };
   area: number;
   borders?: string[];
   timezones?: string[];

@@ -10,17 +10,17 @@ import { Pais } from '../../models/pais.interface';
 export class HomeComponent implements OnInit {
   paises: Pais[] = [];
   paisesFiltrados: Pais[] = [];
-  cargando: boolean = true;
-  error: string = '';
+  cargando = true;
+  error = '';
 
-  // Filtros
-  terminoBusqueda: string = '';
-  regionSeleccionada: string = '';
+  terminoBusqueda = '';
+  regionSeleccionada: string | null = null;
   regiones: string[] = [];
+  skeletonArray = Array(6).fill(0);
 
   constructor(public _service: PaisesService) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this._service.getPaises().subscribe({
       next: (data: Pais[]) => {
         this.paises = data;
@@ -36,31 +36,35 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  extraerRegiones() {
+  extraerRegiones(): void {
     const regionesUnicas = new Set(this.paises.map(p => p.region));
     this.regiones = Array.from(regionesUnicas).sort();
   }
 
-  aplicarFiltros() {
+  aplicarFiltros(): void {
     this.paisesFiltrados = this.paises.filter(pais => {
-      // Filtro por búsqueda (nombre común, oficial o capital)
       const cumpleBusqueda =
-        this.terminoBusqueda === '' ||
+        !this.terminoBusqueda ||
         pais.name.common.toLowerCase().includes(this.terminoBusqueda.toLowerCase()) ||
         pais.name.official.toLowerCase().includes(this.terminoBusqueda.toLowerCase()) ||
         (pais.capital && pais.capital[0]?.toLowerCase().includes(this.terminoBusqueda.toLowerCase()));
 
-      // Filtro por región
-      const cumpleRegion = this.regionSeleccionada === '' || pais.region === this.regionSeleccionada;
+      const cumpleRegion = !this.regionSeleccionada || pais.region === this.regionSeleccionada;
 
       return cumpleBusqueda && cumpleRegion;
     });
   }
 
-  limpiarFiltros() {
+  limpiarFiltros(): void {
     this.terminoBusqueda = '';
-    this.regionSeleccionada = '';
+    this.regionSeleccionada = null;
     this.paisesFiltrados = this.paises;
+  }
+
+  formatPoblacion(pop: number): string {
+    if (pop >= 1_000_000) return (pop / 1_000_000).toFixed(1) + 'M';
+    if (pop >= 1_000) return Math.round(pop / 1_000) + 'K';
+    return pop.toString();
   }
 
   get totalPaisesMostrados(): number {

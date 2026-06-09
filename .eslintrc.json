@@ -1,7 +1,6 @@
 {
   "root": true,
-  "ignorePatterns": ["projects/**/*"],
-  "plugins": ["@typescript-eslint", "prettier", "jsdoc"],
+  "ignorePatterns": ["dist/**", "node_modules/**", ".angular/**", "**/*.spec.ts", "src/index.html"],
   "overrides": [
     {
       "files": ["*.ts"],
@@ -9,82 +8,33 @@
         "project": ["tsconfig.json"],
         "createDefaultProgram": true
       },
-      "extends": ["plugin:@typescript-eslint/recommended", "plugin:prettier/recommended"],
+      "extends": [
+        "plugin:@angular-eslint/recommended",
+        "plugin:@typescript-eslint/recommended",
+        "prettier"
+      ],
+      "plugins": ["prettier"],
       "rules": {
-        // Formato y estilo
-        "max-len": [
+        "prettier/prettier": "error",
+        "@angular-eslint/directive-selector": [
           "error",
-          {
-            "code": 140,
-            "ignoreUrls": true,
-            "ignoreStrings": true,
-            "ignoreTemplateLiterals": true,
-            "ignoreRegExpLiterals": true
-          }
+          { "type": "attribute", "prefix": "app", "style": "camelCase" }
         ],
-        "semi": ["error", "always"],
-        "quotes": ["error", "single"],
-        "indent": ["error", 2],
-
-        // Espaciado y formato
-        "array-bracket-spacing": ["error", "never"],
-        "object-curly-spacing": ["error", "always"],
-        "comma-dangle": ["error", "always-multiline"],
-        "no-multiple-empty-lines": ["error", { "max": 1 }],
-
-        // Buenas prácticas
+        "@angular-eslint/component-selector": [
+          "error",
+          { "type": "element", "prefix": "app", "style": "kebab-case" }
+        ],
         "no-console": ["warn", { "allow": ["warn", "error"] }],
-        "no-debugger": "warn",
-        "no-unused-vars": "off", // Usar la versión TypeScript
-        "@typescript-eslint/no-unused-vars": ["error"],
-        "eqeqeq": ["error", "always"],
-        "curly": "error",
-
-        // Reglas de importación
-        "sort-imports": [
-          "error",
-          {
-            "ignoreCase": true,
-            "ignoreDeclarationSort": true
-          }
-        ],
-
-        // Complejidad y mantenibilidad
-        "complexity": ["warn", 10],
-        "max-depth": ["warn", 4],
-        "max-lines-per-function": [
-          "warn",
-          {
-            "max": 50,
-            "skipBlankLines": true,
-            "skipComments": true
-          }
-        ],
-        "max-params": ["warn", 4],
-        "jsdoc/require-jsdoc": [
-          "error",
-          {
-            "require": {
-              "FunctionDeclaration": true,
-              "MethodDefinition": true,
-              "ClassDeclaration": true,
-              "ArrowFunctionExpression": true,
-              "FunctionExpression": true
-            }
-          }
-        ],
-        "jsdoc/require-param": "error",
-        "jsdoc/require-param-type": "error",
-        "jsdoc/require-param-description": "error",
-        "jsdoc/require-returns": "error",
-        "jsdoc/require-returns-type": "error",
-        "jsdoc/require-returns-description": "error"
+        "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }]
       }
     },
     {
       "files": ["*.html"],
+      "parser": "@angular-eslint/template-parser",
+      "extends": ["plugin:@angular-eslint/template/recommended", "prettier"],
+      "plugins": ["prettier"],
       "rules": {
-        "max-len": ["error", { "code": 140 }]
+        "prettier/prettier": "error"
       }
     }
   ]
